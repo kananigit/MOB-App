@@ -1,8 +1,8 @@
 <ion-view view-title="Posts" class="body">
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="post in posts" href="#/app/post/{{post.id}}">
-        {{post.title}}
+      <ion-item ng-repeat="post in posts">
+        <a href="post.guid.rendered">{{post.title.rendered}}</a>
       </ion-item>
     </ion-list>
   </ion-content>
