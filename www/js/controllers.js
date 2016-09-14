@@ -34,32 +34,32 @@ angular.module('M.O.B.controllers', [])
 })
 
 
-.controller('PostsCtrl', function($scope, $http) {
+.controller('PostsCtrl', function($scope, $rootScope, $http) {
 
-  $scope.posts = [];
+  $rootScope.posts = [];
 
   var myurl = "http://www.mobsdachurch.com/wp-json/wp/v2/pages";
 
   $http.get(myurl)
     .success(function(response) {
       angular.forEach(response, function(child){
-        $scope.posts.push(child);
+        $rootScope.posts.push(child);
       })
     });
   
   
 })
 
-// .controller('PostCtrl', function($scope, $rootScope, $stateParams) {
+.controller('PostCtrl', function($scope, $rootScope, $stateParams) {
 
-//   var id = $stateParams.postId;
-//   $scope.title = "";
+  var id = $stateParams.postId;
+  $scope.title = "";
 
-//   for (var i = 0; i < $rootScope.posts.length; i++) {
-//     $scope.title = $rootScope.posts[i].title;
-//   }
+  for (var i = 0; i < $rootScope.posts.length; i++) {
+    $scope.title = $rootScope.posts[i].title;
+  }
   
-// })
+})
 
 .controller('EldersCtrl', function($scope) {
   // alert('hey');
