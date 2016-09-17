@@ -1,4 +1,4 @@
-angular.module('M.O.B.controllers', [])
+angular.module('M.O.B.controllers', ['ngSanitize', 'youtube-embed'])
 
 .controller('AppCtrl', function($scope) {
   // Form data for the login modal
@@ -38,7 +38,7 @@ angular.module('M.O.B.controllers', [])
 
   $rootScope.posts = [];
 
-  var myurl = "http://www.mobsdachurch.com/wp-json/wp/v2/pages";
+  var myurl = "http://www.mobsdachurch.com/wp-json/wp/v2/pages?search=home";
 
   $http.get(myurl)
     .success(function(response) {
@@ -53,19 +53,49 @@ angular.module('M.O.B.controllers', [])
 .controller('PostCtrl', function($scope, $rootScope, $stateParams) {
 
   var id = $stateParams.postId;
-  $scope.title = "";
+  $scope.excerpt = "";
+  $scope.content = "";
 
   for (var i = 0; i < $rootScope.posts.length; i++) {
-    $scope.title = $rootScope.posts[i].title;
+    $scope.content = $rootScope.posts[i].content.rendered;
+    $scope.excerpt = $rootScope.posts[i].excerpt.rendered;
+    // $scope.title = $rootScope.posts[i].title.rendered;
   }
   
 })
 
-.controller('EldersCtrl', function($scope) {
-  // alert('hey');
+.controller('EldersCtrl', function($scope, $rootScope, $http) {
+   $rootScope.postelders = [];
+
+  var murl = "http://www.mobsdachurch.com/wp-json/wp/v2/posts?filter[category_name]=Leaders on Duty";
+
+  $http.get(murl)
+    .success(function(response) {
+      angular.forEach(response, function(child){
+        // console.log(child);
+        $rootScope.postelders.push(child);
+      })
+    });
   
   
 })
+
+.controller('ElderCtrl', function($scope, $rootScope, $stateParams) {
+
+  var id = $stateParams.postelderId;
+  $scope.elderexcerpts = "";
+  $scope.eldercontents = "";
+
+  for (var i = 0; i < $rootScope.postelders.length; i++) {
+    $scope.eldercontents = $rootScope.postelders[i].content.rendered;
+    $scope.elderexcerpts = $rootScope.postelders[i].excerpt.rendered;
+    // $scope.title = $rootScope.posts[i].title.rendered;
+  }
+  
+})
+
+
+
 
 .controller('NotificationsCtrl', function($scope) {
   // alert('hey');
@@ -73,8 +103,30 @@ angular.module('M.O.B.controllers', [])
   
 })
 
-.controller('ContactusCtrl', function($scope) {
+.controller('HomeCtrl', function($scope) {
   // alert('hey');
+  
+  
+})
+
+.controller('ContactusCtrl', function($scope) {
+  //   $scope.CallNumber = function(){ 
+  //   var number = '18002005555' ; 
+  //   window.plugins.CallNumber.callNumber(function(){
+  //    //success logic goes here
+  //   }, function(){
+  //    //error logic goes here
+  //   }, number) 
+  // };
+
+
+  $scope.CallNumber = function(){ 
+  var number = '18002005555' ; 
+  window.plugins.CallNumber.callNumber(onSuccess, onError, number).onSuccess(function(){ 
+    alert("Success"); 
+}).onError(function(){ alert("Error"); 
+}); 
+};
   
 
 })
@@ -85,11 +137,48 @@ angular.module('M.O.B.controllers', [])
 
 })
 
-.controller('VideolibCtrl', function($scope) {
-  
+.controller('MinistriesCtrl', function($scope) {
+  // alert('happy Sabbath');
   
 
 })
+
+.controller('GalleryCtrl', function($scope) {
+  // alert('happy Sabbath');
+  
+
+})
+
+
+.controller('VideolibCtrl', function($scope, $http){
+    $scope.playerVars = {
+      rel: 0,
+      showinfo: 0,
+      modestbranding: 0,
+      }
+
+    $scope.videos = [];
+
+    $scope.youtubeParams = {
+      key: 'AIzaSyDcPGjaLoXzh4_E1HWsAr8XRhGNTEGZQHo',
+      type: 'video',
+      maxResults: '5',
+      part: 'id,snippet',
+      q: 'mobsdachurch',
+      order: 'ViewCount',
+      channelId: 'UC5WHiA8Lcm6l2byl-Ah3RRw',
+    }
+
+    $http.get('https://www.googleapis.com/youtube/v3/search', {params:$scope.youtubeParams}).success(function(response){
+      angular.forEach(response.items, function(child){
+        console.log (child);
+
+        $scope.videos.push(child);
+      });
+    });
+
+  })
+
 
 .controller('AboutusCtrl', function($scope) {
   // alert('hey');

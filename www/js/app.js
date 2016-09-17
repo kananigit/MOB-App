@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('M.O.B', ['ionic', 'M.O.B.controllers'])
+angular.module('M.O.B', ['ionic', 'M.O.B.controllers', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -23,6 +23,8 @@ angular.module('M.O.B', ['ionic', 'M.O.B.controllers'])
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
 
+  
+
   $stateProvider
 
   .state('app', {
@@ -33,7 +35,15 @@ angular.module('M.O.B', ['ionic', 'M.O.B.controllers'])
   })
 
  
-
+    .state('app.home', {
+      url: "/home",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/home.html",
+          controller: 'HomeCtrl'
+        }
+      }
+    })
   
     .state('app.posts', {
       url: "/posts",
@@ -55,12 +65,22 @@ angular.module('M.O.B', ['ionic', 'M.O.B.controllers'])
       }
     })
 
-    .state('app.eldersonduty', {
-      url: "/eldersonduty",
+    .state('app.postelders', {
+      url: "/postelders",
       views: {
         'menuContent': {
           templateUrl: "templates/eldersonduty.html",
           controller: 'EldersCtrl'
+        }
+      }
+    })
+
+    .state('app.postelder', {
+      url: "/postelder/:postelderId",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/elderonduty.html",
+          controller: 'ElderCtrl'
         }
       }
     })
@@ -118,7 +138,27 @@ angular.module('M.O.B', ['ionic', 'M.O.B.controllers'])
       }
     })
 
+    .state('app.ministries', {
+      url: "/ministries",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/ministries.html",
+          controller: 'MinistriesCtrl'
+        }
+      }
+    })
+
+    .state('app.gallery', {
+      url: "/gallery",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/gallery.html",
+          controller: 'GalleryCtrl'
+        }
+      }
+    })
+
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/posts');
+  $urlRouterProvider.otherwise('/app/home');
 });
