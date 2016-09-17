@@ -1,4 +1,4 @@
-angular.module('M.O.B.controllers', ['ngSanitize', 'youtube-embed'])
+angular.module('M.O.B.controllers', ['ngSanitize'])
 
 .controller('AppCtrl', function($scope) {
   // Form data for the login modal
